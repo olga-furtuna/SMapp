@@ -33,12 +33,6 @@ export const loginUserService = (request) => {
 
   return (
     fetch(LOGIN_API_ENDPOINT, parameters)
-      // .then(response => {
-      //   return {
-      //     result: response.json(),
-      //     headers: response.headers
-      //   };
-      // })
       .then((response) => {
         return Promise.all([response.json(), response.headers]);
       })
@@ -103,6 +97,122 @@ export const fetchPostsService = (request) => {
       return json.result;
     })
     .then((result) => result);
+};
+
+export const createPostService = (request) => {
+  const CREATE_POST_API_ENDPOINT = "https://postify-api.herokuapp.com/posts";
+
+  const parameters = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(request.user)
+  };
+
+  return fetch(
+    CREATE_POST_API_ENDPOINT + buildQueryString(AuthStorage.getData()),
+    parameters
+  )
+    .then((response) => {
+      return {
+        result: response.json(),
+      };
+    })
+    .then((json) => {
+      return json.result;
+    })
+    .then((result) => result);
+};
+
+export const deletePostService = (request) => {
+  const DELETE_POST_API_ENDPOINT = "https://postify-api.herokuapp.com/posts/";
+
+  const parameters = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  };
+
+  return fetch(
+    DELETE_POST_API_ENDPOINT + request.user.id + buildQueryString(AuthStorage.getData()),
+    parameters
+  )
+    .then((response) => {
+      return response;
+    })
+};
+
+//new
+export const fetchCommentsService = (request) => {
+  const FETCH_COMMENTS_API_ENDPOINT = "https://postify-api.herokuapp.com/comments";
+
+  const parameters = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  return fetch(
+    FETCH_COMMENTS_API_ENDPOINT + buildQueryString(AuthStorage.getData()),
+    parameters
+  )
+    .then((response) => {
+      return {
+        result: response.json(),
+      };
+    })
+    .then((json) => {
+      return json.result;
+    })
+    .then((result) => result);
+};
+
+export const createCommentService = (request) => {
+  const CREATE_COMMENT_API_ENDPOINT = "https://postify-api.herokuapp.com/comments";
+
+  const parameters = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(request.user)
+  };
+
+  return fetch(
+    CREATE_COMMENT_API_ENDPOINT + buildQueryString(AuthStorage.getData()),
+    parameters
+  )
+    .then((response) => {
+      return {
+        result: response.json(),
+      };
+    })
+    .then((json) => {
+      return json.result;
+    })
+    .then((result) => result);
+};
+
+export const deleteCommentService = (request) => {
+  const DELETE_COMMENT_API_ENDPOINT = "https://postify-api.herokuapp.com/comments/";
+
+  const parameters = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  };
+
+  return fetch(
+    DELETE_COMMENT_API_ENDPOINT + request.user.id + buildQueryString(AuthStorage.getData()),
+    parameters
+  )
+    .then((response) => {
+      return response;
+    })
 };
 
 const buildQueryString = (authData) => {

@@ -4,6 +4,11 @@ import {
   loginUserService,
   userProfileService,
   fetchPostsService,
+  createPostService,
+  deletePostService,
+  fetchCommentsService,
+  createCommentService,
+  deleteCommentService
 } from "../services/apiService";
 
 import * as types from "../actions";
@@ -34,4 +39,30 @@ export function* profileSaga(payload) {
 export function* fetchPostsSaga(payload) {
   const response = yield call(fetchPostsService, payload);
   yield [put({ type: types.FETCH_POSTS_SUCCESS, response })];
+}
+
+export function* createPostSaga(payload) {
+  const response = yield call(createPostService, payload);
+  yield [put({ type: types.CREATE_POST_SUCCESS, response })];
+}
+
+export function* deletePostSaga(payload) {
+  const response = yield call(deletePostService, payload);
+  yield [put({ type: types.DELETE_POST_SUCCESS, response })];
+}
+
+//new
+export function* fetchCommentsSaga(payload) {
+  const response = yield call(fetchCommentsService, payload);
+  yield [put({ type: types.FETCH_COMMENTS_SUCCESS, response })];
+}
+
+export function* createCommentSaga(payload) {
+  const response = yield call(createCommentService, payload);
+  yield [put({ type: types.CREATE_COMMENT_SUCCESS, response })];
+}
+
+export function* deleteCommentSaga(payload) {
+  const response = yield call(deleteCommentService, payload);
+  yield [put({ type: types.DELETE_COMMENT_SUCCESS, response })];
 }

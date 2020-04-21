@@ -15,6 +15,10 @@ import Typography from "@material-ui/core/Typography";
 
 class HomePage extends Component {
   componentDidMount() {
+    this.fetchPosts();
+  }
+
+  fetchPosts() {
     this.props.dispatch(fetchPostsAction({}));
   }
 
@@ -30,9 +34,9 @@ class HomePage extends Component {
             Главная страница
           </Typography>
 
-          <PostForm />
+          <PostForm onUpdate={() => this.fetchPosts()}/>
 
-          <Posts posts={posts} />
+          <Posts posts={posts}  onUpdate={() => this.fetchPosts()}/>
         </Container>
       </div>
     );

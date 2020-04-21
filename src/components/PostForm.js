@@ -1,14 +1,18 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
 // Material UI //
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
-const useStyles = makeStyles((theme) => ({
+//Actions //
+import { createPostAction } from "../actions/actions";
+
+const styles = (theme) => ({
   root: {
     "& .MuiTextField-root": {
       margin: theme.spacing(0.5),
@@ -23,51 +27,85 @@ const useStyles = makeStyles((theme) => ({
   input: {
     backgroundColor: "white",
   },
-}));
+});
 
-export default function MultilineTextFields() {
-  const classes = useStyles();
-  //  const [value, setValue] = React.useState('Controlled');
 
-  //   const handleChange = (event) => {
-  //     setValue(event.target.value);
-  //   };
+class PostForm extends Component {
 
-  return (
-    <Grid item xs={12} md={8}>
-      <Paper elevation={0} className={classes.greyBox}>
-        <Typography variant="h6" gutterBottom>
-          Новый пост
-        </Typography>
-        <form className={classes.root} noValidate autoComplete="off">
-          <TextField
-            className="input"
-            id="outlined-basic"
-            label="Заголовок"
-            variant="outlined"
-            InputProps={{
-              className: classes.input,
-            }}
-          />
+  onSubmit = (event) => {
+    event.preventDefault();
 
-          <TextField
-            className={classes.root}
-            id="outlined-multiline-static"
-            label="Что у вас нового?"
-            multiline
-            rows="4"
-            defaultValue=""
-            variant="outlined"
-            InputProps={{
-              className: classes.input,
-            }}
-          />
+    let title = event.target.post_title.value;
+    let description = event.target.post_description.value;
 
-          <Button variant="contained" color="primary">
-            Отправить
-          </Button>
-        </form>
-      </Paper>
-    </Grid>
-  );
+    const data = {
+      title: title,
+      description: description,
+    };
+
+    this.props.dispatch(createPostAction(data));
+
+    this.props.onUpdate();
+
+    event.target.post_title.value = '';
+    event.target.post_description.value = '';
+  };
+
+  render () {
+    const { classes } = this.props;
+
+    let errors, isError;
+
+    if (this.props.response.createPost.hasOwnProperty("response")) {
+      isError = Array.isArray(this.props.response.createPost.response.title);
+      errors = isError ? this.props.response.createPost.response.title : null;
+    }
+
+    return (
+      <Grid item xs={12} md={8}>
+        <Paper elevation={0} className={classes.greyBox}>
+          <Typography variant="h6" gutterBottom>
+            Новый пост
+          </Typography>
+          <form className={classes.root} noValidate autoComplete="off" onSubmit={this.onSubmit}>
+            <TextField
+            error={isError}
+            helperText={errors ? errors[0] : ""}
+              className="input"
+              id="post_title"
+              label="Заголовок"
+              variant="outlined"
+              InputProps={{
+                className: classes.input,
+              }}
+              required
+            />
+
+            <TextField
+              className={classes.root}
+              id="post_description"
+              label="Что у вас нового?"
+              multiline
+              rows="4"
+              defaultValue=""
+              variant="outlined"
+              InputProps={{
+                className: classes.input,
+              }}
+            />
+
+            <Button variant="contained" color="primary" type="submit">
+              Отправить
+            </Button>
+          </form>
+        </Paper>
+      </Grid>
+    );
+  }
 }
+
+
+const mapStateToProps = (response) => ({ response });
+
+
+export default connect(mapStateToProps, null)(withStyles(styles)(PostForm));

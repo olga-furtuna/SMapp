@@ -23,7 +23,7 @@ class ProfilePage extends Component {
             Мои посты:
           </Typography>
 
-          <UserPosts />
+          <UserPosts    />
         </Container>
       </div>
     );
