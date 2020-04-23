@@ -34,9 +34,12 @@ class HomePage extends Component {
             Главная страница
           </Typography>
 
-          <PostForm onUpdate={() => this.fetchPosts()}/>
+          <PostForm
+            // onUpdate={() => this.fetchPosts()}
+            onUpdate={() => window.location.reload()}
+          />
 
-          <Posts posts={posts}  onUpdate={() => this.fetchPosts()}/>
+          <Posts posts={posts} onUpdate={() => window.location.reload()} />
         </Container>
       </div>
     );

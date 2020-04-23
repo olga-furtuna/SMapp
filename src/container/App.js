@@ -6,6 +6,7 @@ import LoginPage from "../components/loginPage";
 import RegisterPage from "../components/registerPage";
 import HomePage from "../components/homePage";
 import ProfilePage from "../components/profilePage";
+import CommentPage from "../components/commentPage";
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
             <Route path="/register" component={RegisterPage} />
             <PrivateRoute path="/home" component={HomePage} />
             <PrivateRoute path="/profile" component={ProfilePage} />
+            <PrivateRoute path="/comment" component={CommentPage} />
           </Switch>
         </div>
       </BrowserRouter>

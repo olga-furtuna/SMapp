@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
 
 //Actions //
 import { createPostAction } from "../actions/actions";
@@ -19,6 +20,9 @@ const styles = (theme) => ({
       width: "100%",
     },
   },
+  card: {
+    margin: theme.spacing(2),
+  },
 
   greyBox: {
     padding: theme.spacing(2),
@@ -29,9 +33,7 @@ const styles = (theme) => ({
   },
 });
 
-
 class PostForm extends Component {
-
   onSubmit = (event) => {
     event.preventDefault();
 
@@ -47,11 +49,11 @@ class PostForm extends Component {
 
     this.props.onUpdate();
 
-    event.target.post_title.value = '';
-    event.target.post_description.value = '';
+    event.target.post_title.value = "";
+    event.target.post_description.value = "";
   };
 
-  render () {
+  render() {
     const { classes } = this.props;
 
     let errors, isError;
@@ -63,49 +65,54 @@ class PostForm extends Component {
 
     return (
       <Grid item xs={12} md={8}>
-        <Paper elevation={0} className={classes.greyBox}>
-          <Typography variant="h6" gutterBottom>
-            Новый пост
-          </Typography>
-          <form className={classes.root} noValidate autoComplete="off" onSubmit={this.onSubmit}>
-            <TextField
-            error={isError}
-            helperText={errors ? errors[0] : ""}
-              className="input"
-              id="post_title"
-              label="Заголовок"
-              variant="outlined"
-              InputProps={{
-                className: classes.input,
-              }}
-              required
-            />
-
-            <TextField
+        <Card className={classes.card}>
+          <Paper elevation={0} className={classes.greyBox}>
+            <Typography variant="h6" gutterBottom>
+              Новый пост
+            </Typography>
+            <form
               className={classes.root}
-              id="post_description"
-              label="Что у вас нового?"
-              multiline
-              rows="4"
-              defaultValue=""
-              variant="outlined"
-              InputProps={{
-                className: classes.input,
-              }}
-            />
+              noValidate
+              autoComplete="off"
+              onSubmit={this.onSubmit}
+            >
+              <TextField
+                error={isError}
+                helperText={errors ? errors[0] : ""}
+                className={classes.root}
+                id="post_title"
+                label="Заголовок"
+                variant="outlined"
+                InputProps={{
+                  className: classes.input,
+                }}
+                required
+              />
 
-            <Button variant="contained" color="primary" type="submit">
-              Отправить
-            </Button>
-          </form>
-        </Paper>
+              <TextField
+                className={classes.root}
+                id="post_description"
+                label="Что у вас нового?"
+                multiline
+                rows="4"
+                defaultValue=""
+                variant="outlined"
+                InputProps={{
+                  className: classes.input,
+                }}
+              />
+
+              <Button variant="contained" color="primary" type="submit">
+                Отправить
+              </Button>
+            </form>
+          </Paper>
+        </Card>
       </Grid>
     );
   }
 }
 
-
 const mapStateToProps = (response) => ({ response });
-
 
 export default connect(mapStateToProps, null)(withStyles(styles)(PostForm));

@@ -1,65 +1,71 @@
 import * as types from "./index";
 
-export const registerUserAction = (user) => {
+export const registerUserAction = (data) => {
   return {
     type: types.REGISTER_USER,
-    user,
+    data,
   };
 };
 
-export const loginUserAction = (user) => {
+export const loginUserAction = (data) => {
   return {
     type: types.LOGIN_USER,
-    user,
+    data,
   };
 };
 
-export const userProfileAction = (user) => {
+export const userProfileAction = (data) => {
   return {
     type: types.USER_PROFILE,
-    user,
+    data,
   };
 };
 
-export const fetchPostsAction = (user) => {
+export const fetchPostsAction = (data) => {
   return {
     type: types.FETCH_POSTS,
-    user,
+    data,
   };
 };
 
-export const createPostAction = (user) => {
+export const createPostAction = (data) => {
   return {
     type: types.CREATE_POST,
-    user,
+    data,
   };
 };
 
-export const deletePostAction = (user) => {
+export const deletePostAction = (data) => {
   return {
     type: types.DELETE_POST,
-    user,
+    data,
   };
 };
 
-//NEW
-export const fetchCommentsAction = (user) => {
+export const fetchSinglePostAction = (data) => {
+  return {
+    type: types.FETCH_SINGLE_POST,
+    data,
+  };
+};
+
+export const fetchCommentsAction = (data) => {
   return {
     type: types.FETCH_COMMENTS,
-    user,
+    data,
   };
 };
 
-export const createCommentAction = (user) => {
+export const createCommentAction = (data) => {
   return {
     type: types.CREATE_COMMENT,
-    user,
+    data,
   };
 };
 
-export const deleteCommentAction = (user) => {
+export const deleteCommentAction = (data) => {
   return {
     type: types.DELETE_COMMENT,
-    user,
+    data,
   };
 };

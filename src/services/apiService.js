@@ -8,7 +8,7 @@ export const registerUserService = (request) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(request.user),
+    body: JSON.stringify(request.data),
   };
 
   return fetch(REGISTER_API_ENDPOINT, parameters)
@@ -28,24 +28,22 @@ export const loginUserService = (request) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(request.user),
+    body: JSON.stringify(request.data),
   };
 
-  return (
-    fetch(LOGIN_API_ENDPOINT, parameters)
-      .then((response) => {
-        return Promise.all([response.json(), response.headers]);
-      })
-      .then(([responseJson, headers]) => {
-        return {
-          result: responseJson,
-          headers: headers,
-        };
-      })
-      .then((json) => {
-        return json;
-      })
-  );
+  return fetch(LOGIN_API_ENDPOINT, parameters)
+    .then((response) => {
+      return Promise.all([response.json(), response.headers]);
+    })
+    .then(([responseJson, headers]) => {
+      return {
+        result: responseJson,
+        headers: headers,
+      };
+    })
+    .then((json) => {
+      return json;
+    });
 };
 
 export const userProfileService = (request) => {
@@ -107,7 +105,7 @@ export const createPostService = (request) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(request.user)
+    body: JSON.stringify(request.data),
   };
 
   return fetch(
@@ -132,21 +130,50 @@ export const deletePostService = (request) => {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-    }
+    },
   };
 
   return fetch(
-    DELETE_POST_API_ENDPOINT + request.user.id + buildQueryString(AuthStorage.getData()),
+    DELETE_POST_API_ENDPOINT +
+      request.data.id +
+      buildQueryString(AuthStorage.getData()),
+    parameters
+  ).then((response) => {
+    return response;
+  });
+};
+
+export const fetchSinglePostService = (request) => {
+  const FETCH_SINGLE_POST_API_ENDPOINT =
+    "https://postify-api.herokuapp.com/posts/";
+
+  const parameters = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  return fetch(
+    FETCH_SINGLE_POST_API_ENDPOINT +
+      request.id +
+      buildQueryString(AuthStorage.getData()),
     parameters
   )
     .then((response) => {
-      return response;
+      return {
+        result: response.json(),
+      };
     })
+    .then((json) => {
+      return json.result;
+    })
+    .then((result) => result);
 };
 
-//new
 export const fetchCommentsService = (request) => {
-  const FETCH_COMMENTS_API_ENDPOINT = "https://postify-api.herokuapp.com/comments";
+  const FETCH_COMMENTS_API_ENDPOINT =
+    "https://postify-api.herokuapp.com/comments";
 
   const parameters = {
     method: "GET",
@@ -171,14 +198,15 @@ export const fetchCommentsService = (request) => {
 };
 
 export const createCommentService = (request) => {
-  const CREATE_COMMENT_API_ENDPOINT = "https://postify-api.herokuapp.com/comments";
+  const CREATE_COMMENT_API_ENDPOINT =
+    "https://postify-api.herokuapp.com/comments";
 
   const parameters = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(request.user)
+    body: JSON.stringify(request.data),
   };
 
   return fetch(
@@ -197,22 +225,24 @@ export const createCommentService = (request) => {
 };
 
 export const deleteCommentService = (request) => {
-  const DELETE_COMMENT_API_ENDPOINT = "https://postify-api.herokuapp.com/comments/";
+  const DELETE_COMMENT_API_ENDPOINT =
+    "https://postify-api.herokuapp.com/comments/";
 
   const parameters = {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-    }
+    },
   };
 
   return fetch(
-    DELETE_COMMENT_API_ENDPOINT + request.user.id + buildQueryString(AuthStorage.getData()),
+    DELETE_COMMENT_API_ENDPOINT +
+      request.data.id +
+      buildQueryString(AuthStorage.getData()),
     parameters
-  )
-    .then((response) => {
-      return response;
-    })
+  ).then((response) => {
+    return response;
+  });
 };
 
 const buildQueryString = (authData) => {

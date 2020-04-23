@@ -20,10 +20,10 @@ class ProfilePage extends Component {
           </Typography>
           <UserData />
           <Typography component="h1" variant="h5" gutterBottom>
-            Мои посты:
+            Мои посты
           </Typography>
 
-          <UserPosts    />
+          <UserPosts />
         </Container>
       </div>
     );

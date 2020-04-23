@@ -6,9 +6,10 @@ import {
   fetchPostsService,
   createPostService,
   deletePostService,
+  fetchSinglePostService,
   fetchCommentsService,
   createCommentService,
-  deleteCommentService
+  deleteCommentService,
 } from "../services/apiService";
 
 import * as types from "../actions";
@@ -51,7 +52,11 @@ export function* deletePostSaga(payload) {
   yield [put({ type: types.DELETE_POST_SUCCESS, response })];
 }
 
-//new
+export function* fetchSinglePostSaga(payload) {
+  const response = yield call(fetchSinglePostService, payload);
+  yield [put({ type: types.FETCH_SINGLE_POST_SUCCESS, response })];
+}
+
 export function* fetchCommentsSaga(payload) {
   const response = yield call(fetchCommentsService, payload);
   yield [put({ type: types.FETCH_COMMENTS_SUCCESS, response })];
