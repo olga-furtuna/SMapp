@@ -26,6 +26,7 @@ const styles = (theme) => ({
 class Comment extends Component {
   render() {
     var comment = this.props.comment;
+    var userId = this.props.userId;
     const { classes } = this.props;
 
     return (
@@ -45,12 +46,14 @@ class Comment extends Component {
                     User ID: {comment.user_id}
                   </Typography>
 
-                  <IconButton
-                    aria-label="delete"
-                    //   onClick={(event) => this.onClick(event, post.id)}
-                  >
-                    <CloseIcon fontSize="small" color="action" />
-                  </IconButton>
+                  {comment.user_id == userId ? (
+                    <IconButton
+                      aria-label="delete"
+                      // onClick={(event) => this.onClick(event)}
+                    >
+                      <CloseIcon fontSize="small" color="action" />
+                    </IconButton>
+                  ) : null}
                 </div>
 
                 <Typography variant="subtitle2" color="textSecondary">

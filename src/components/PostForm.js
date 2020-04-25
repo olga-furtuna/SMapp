@@ -34,6 +34,20 @@ const styles = (theme) => ({
 });
 
 class PostForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      updateNeeded: false,
+    };
+  }
+
+  componentDidUpdate() {
+    if (this.state.updateNeeded) {
+      this.props.onUpdate();
+    }
+  }
+
   onSubmit = (event) => {
     event.preventDefault();
 
@@ -51,6 +65,8 @@ class PostForm extends Component {
 
     event.target.post_title.value = "";
     event.target.post_description.value = "";
+
+    this.setState({ updateNeeded: true });
   };
 
   render() {

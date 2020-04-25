@@ -35,9 +35,14 @@ const styles = (theme) => ({
 });
 
 class Post extends Component {
-  state = {
-    commentsHidden: true,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      commentsHidden: true,
+      updateNeeded: false,
+    };
+  }
 
   onClick = (event, id) => {
     event.preventDefault();
@@ -48,8 +53,14 @@ class Post extends Component {
 
     this.props.dispatch(deletePostAction(data));
 
-    this.props.onUpdate();
+    this.setState({ updateNeeded: true });
   };
+
+  componentDidUpdate() {
+    if (this.state.updateNeeded) {
+      this.props.onUpdate();
+    }
+  }
 
   render() {
     var post = this.props.post;
@@ -72,25 +83,42 @@ class Post extends Component {
                       justifyContent: "space-between",
                     }}
                   >
-                    <Link to="comment" variant="body2">
+                    {this.props.hideLink ? (
                       <Typography component="h2" variant="h5">
                         {post.title}
                       </Typography>
-                    </Link>
+                    ) : (
+                      <Link to={`post/${post.id}`} variant="body2">
+                        <Typography component="h2" variant="h5">
+                          {post.title}
+                        </Typography>
+                      </Link>
+                    )}
 
                     {post.user_id == userId ? (
                       <IconButton
                         aria-label="delete"
                         onClick={(event) => this.onClick(event, post.id)}
                       >
-                        <CloseIcon fontSize="medium" color="action" />
+                        <CloseIcon fontSize="small" color="action" />
                       </IconButton>
                     ) : null}
                   </div>
 
-                  <Typography variant="subtitle1" color="textSecondary">
-                    {post.created_at}
-                  </Typography>
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Typography variant="subtitle1" color="textSecondary">
+                      {post.created_at}
+                    </Typography>
+
+                    {this.props.showUserId ? (
+                      <Typography variant="subtitle1" color="textSecondary">
+                        user ID: {post.user_id}
+                      </Typography>
+                    ) : null}
+                  </div>
+
                   <Typography variant="subtitle1" paragraph>
                     {post.description}
                   </Typography>
@@ -126,7 +154,11 @@ class Post extends Component {
               </div>
 
               {this.state.commentsHidden ? null : (
-                <Comments postId={post.id} comments={this.props.comments} />
+                <Comments
+                  postId={post.id}
+                  comments={this.props.comments}
+                  userId={post.user_id}
+                />
               )}
             </Card>
           </Grid>

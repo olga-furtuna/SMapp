@@ -156,7 +156,7 @@ export const fetchSinglePostService = (request) => {
 
   return fetch(
     FETCH_SINGLE_POST_API_ENDPOINT +
-      request.id +
+      request.data.id +
       buildQueryString(AuthStorage.getData()),
     parameters
   )

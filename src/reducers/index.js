@@ -5,10 +5,10 @@ import profile from "./profileReducer";
 import fetchPosts from "./postsReducer";
 import createPost from "./createPostReducer";
 import deletePost from "./deletePostReducer";
+import singlePost from "./singlePostReducer";
 import fetchComments from "./commentsReducer";
 import createComment from "./createCommentReducer";
 import deleteComment from "./deleteCommentReducer";
-
 
 const rootReducer = combineReducers({
   register,
@@ -17,9 +17,10 @@ const rootReducer = combineReducers({
   fetchPosts,
   createPost,
   deletePost,
+  singlePost,
   fetchComments,
   createComment,
-  deleteComment
+  deleteComment,
 });
 
 export default rootReducer;

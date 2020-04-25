@@ -30,17 +30,17 @@ class Posts extends Component {
     shown: true,
   };
 
-  onClick = (event, id) => {
-    event.preventDefault();
+  // onClick = (event, id) => {
+  //   event.preventDefault();
 
-    const data = {
-      id: id,
-    };
+  //   const data = {
+  //     id: id,
+  //   };
 
-    this.props.dispatch(deletePostAction(data));
+  //   this.props.dispatch(deletePostAction(data));
 
-    this.props.onUpdate();
-  };
+  //   this.props.onUpdate();
+  // };
 
   componentDidMount() {
     this.fetchComments();
@@ -72,6 +72,7 @@ class Posts extends Component {
               key={post.id}
               post={post}
               comments={comments.filter((x) => x.commentable_id == post.id)}
+              onUpdate={this.props.onUpdate}
             />
           ))}
       </div>
