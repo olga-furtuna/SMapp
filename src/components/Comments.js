@@ -18,7 +18,12 @@ class Comments extends Component {
             return new Date(b.created_at) - new Date(a.created_at);
           })
           .map((comment) => (
-            <Comment key={comment.id} comment={comment} userId={userId} />
+            <Comment
+              key={comment.id}
+              comment={comment}
+              userId={userId}
+              onUpdate={() => this.props.onUpdate()}
+            />
           ))}
       </div>
     );

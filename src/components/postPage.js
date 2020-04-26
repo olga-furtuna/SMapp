@@ -46,12 +46,27 @@ class PostPage extends Component {
     this.setState({ removed: true });
   };
 
+  onCommentAdded = () => {
+    this.setState({ commentAdded: true });
+  };
+
   componentDidMount() {
     var id = this.props.match.params.id;
     if (id) {
       this.props.dispatch(fetchSinglePostAction({ id: id }));
-      this.props.dispatch(fetchCommentsAction({}));
+      this.fetchComments();
     }
+  }
+
+  componentDidUpdate() {
+    if (this.state.commentAdded) {
+      this.props.dispatch(fetchCommentsAction({}));
+      this.setState({ commentAdded: false });
+    }
+  }
+
+  fetchComments() {
+    this.props.dispatch(fetchCommentsAction({}));
   }
 
   render() {
@@ -73,16 +88,22 @@ class PostPage extends Component {
             </Typography>
 
             {post ? (
-              <Post
-                post={post}
-                comments={comments.filter((x) => x.commentable_id == post.id)}
-                hideLink
-                showUserId
-                onUpdate={this.onRemovePost}
-              />
-            ) : null}
+              <div>
+                <Post
+                  post={post}
+                  comments={comments.filter((x) => x.commentable_id == post.id)}
+                  hideLink
+                  showUserId
+                  onUpdate={this.onRemovePost}
+                  onCommentsUpdate={() => this.fetchComments()}
+                />
 
-            <CommentForm />
+                <CommentForm
+                  onAdded={() => this.onCommentAdded()}
+                  postId={post.id}
+                />
+              </div>
+            ) : null}
           </Container>
         </Grid>
       </div>

@@ -158,6 +158,7 @@ class Post extends Component {
                   postId={post.id}
                   comments={this.props.comments}
                   userId={post.user_id}
+                  onUpdate={() => this.props.onCommentsUpdate()}
                 />
               )}
             </Card>

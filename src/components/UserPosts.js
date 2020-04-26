@@ -13,11 +13,14 @@ import Container from "@material-ui/core/Container";
 
 class UserPosts extends Component {
   componentDidMount() {
+    this.fetchPosts();
+  }
+
+  fetchPosts() {
     this.props.dispatch(fetchPostsAction({}));
   }
 
   render() {
-    console.log(this.props);
     var posts = this.props.response.fetchPosts.response
       ? this.props.response.fetchPosts.response
       : [];
@@ -27,7 +30,10 @@ class UserPosts extends Component {
     return (
       <div>
         <Container maxWidth="lg">
-          <Posts posts={posts.filter((x) => x.user_id == userId)} />
+          <Posts
+            posts={posts.filter((x) => x.user_id == userId)}
+            onUpdate={() => this.fetchPosts()}
+          />
         </Container>
       </div>
     );

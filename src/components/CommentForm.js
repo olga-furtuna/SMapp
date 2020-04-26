@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-//import { connect } from "react-redux";
+import { connect } from "react-redux";
+
+// Actions //
+import { createCommentAction } from "../actions/actions";
 
 // Material UI //
 import { withStyles } from "@material-ui/core";
@@ -27,8 +30,27 @@ const styles = (theme) => ({
 });
 
 class CommentForm extends Component {
+  onSubmit = (event, id) => {
+    event.preventDefault();
+
+    let message = event.target.comment_title.value;
+
+    this.props.dispatch(
+      createCommentAction({
+        message: message,
+        commentable_id: id,
+        commentable_type: "Post",
+      })
+    );
+
+    event.target.comment_title.value = "";
+
+    this.props.onAdded();
+  };
+
   render() {
     const { classes } = this.props;
+    var postId = this.props.postId;
     return (
       <div>
         <Card className={classes.card}>
@@ -37,7 +59,7 @@ class CommentForm extends Component {
             className={classes.root}
             noValidate
             autoComplete="off"
-            onSubmit={this.onSubmit}
+            onSubmit={(event) => this.onSubmit(event, postId)}
           >
             <TextField
               className={classes.root}
@@ -49,10 +71,7 @@ class CommentForm extends Component {
               }}
             />
 
-            <IconButton
-              //onClick={(event) => this.onClick(event, post.id)}
-              type="submit"
-            >
+            <IconButton type="submit">
               <SendIcon fontSize="large" color="primary" />
             </IconButton>
           </form>
@@ -62,8 +81,6 @@ class CommentForm extends Component {
   }
 }
 
-//const mapStateToProps = (response) => ({ response });
+const mapStateToProps = (response) => ({ response });
 
-//export default connect(mapStateToProps, null)(withStyles(styles)(CommentForm));
-
-export default withStyles(styles)(CommentForm);
+export default connect(mapStateToProps, null)(withStyles(styles)(CommentForm));

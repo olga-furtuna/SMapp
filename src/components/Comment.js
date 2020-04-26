@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+//Actions //
+import { deleteCommentAction } from "../actions/actions";
+
 // Material UI //
 import Typography from "@material-ui/core/Typography";
 import CardContent from "@material-ui/core/CardContent";
@@ -24,6 +27,32 @@ const styles = (theme) => ({
 });
 
 class Comment extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      updateNeeded: false,
+    };
+  }
+
+  onClick = (event, id) => {
+    event.preventDefault();
+
+    const data = {
+      id: id,
+    };
+
+    this.props.dispatch(deleteCommentAction(data));
+
+    this.setState({ updateNeeded: true });
+  };
+
+  componentDidUpdate() {
+    if (this.state.updateNeeded) {
+      this.props.onUpdate();
+    }
+  }
+
   render() {
     var comment = this.props.comment;
     var userId = this.props.userId;
@@ -49,7 +78,7 @@ class Comment extends Component {
                   {comment.user_id == userId ? (
                     <IconButton
                       aria-label="delete"
-                      // onClick={(event) => this.onClick(event)}
+                      onClick={(event) => this.onClick(event, comment.id)}
                     >
                       <CloseIcon fontSize="small" color="action" />
                     </IconButton>
