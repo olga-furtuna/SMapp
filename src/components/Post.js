@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 // Components //
 import Comments from "./Comments";
+import EditPost from "./EditPost";
 
 //Actions //
 import { deletePostAction } from "../actions/actions";
@@ -17,6 +18,7 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { withStyles } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
@@ -41,6 +43,7 @@ class Post extends Component {
     this.state = {
       commentsHidden: true,
       updateNeeded: false,
+      editMode: false,
     };
   }
 
@@ -53,6 +56,8 @@ class Post extends Component {
 
     this.props.dispatch(deletePostAction(data));
 
+    this.props.onUpdate();
+
     this.setState({ updateNeeded: true });
   };
 
@@ -61,6 +66,10 @@ class Post extends Component {
       this.props.onUpdate();
     }
   }
+
+  toggleEditMode = () => {
+    this.setState({ editMode: !this.state.editMode });
+  };
 
   render() {
     var post = this.props.post;
@@ -71,99 +80,126 @@ class Post extends Component {
 
     return (
       <div>
-        <div>
-          <Grid item xs={12}>
-            <Card className={classes.card}>
-              <div className={classes.cardDetails}>
-                <CardContent>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    {this.props.hideLink ? (
-                      <Typography component="h2" variant="h5">
-                        {post.title}
-                      </Typography>
-                    ) : (
-                      <Link to={`post/${post.id}`} variant="body2">
+        {this.state.editMode ? (
+          <EditPost
+            postId={post.id}
+            title={post.title}
+            description={post.description}
+            onUpdate={() => {
+              this.props.onEdit();
+              this.setState({ editMode: false });
+            }}
+            onCancel={() => this.setState({ editMode: false })}
+          />
+        ) : (
+          <div>
+            <Grid item xs={12}>
+              <Card className={classes.card}>
+                <div className={classes.cardDetails}>
+                  <CardContent>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      {this.props.hideLink ? (
                         <Typography component="h2" variant="h5">
                           {post.title}
                         </Typography>
-                      </Link>
-                    )}
+                      ) : (
+                        <Link to={`post/${post.id}`} variant="body2">
+                          <Typography component="h2" variant="h5">
+                            {post.title}
+                          </Typography>
+                        </Link>
+                      )}
 
-                    {post.user_id == userId ? (
-                      <IconButton
-                        aria-label="delete"
-                        onClick={(event) => this.onClick(event, post.id)}
-                      >
-                        <CloseIcon fontSize="small" color="action" />
-                      </IconButton>
-                    ) : null}
-                  </div>
+                      {post.user_id == userId ? (
+                        <div>
+                          {this.props.hideLink ? (
+                            <IconButton
+                              aria-label="edit"
+                              onClick={(event) => this.toggleEditMode()}
+                            >
+                              <EditIcon fontSize="small" color="action" />
+                            </IconButton>
+                          ) : null}
+                          <IconButton
+                            aria-label="delete"
+                            onClick={(event) => this.onClick(event, post.id)}
+                          >
+                            <CloseIcon fontSize="small" color="action" />
+                          </IconButton>
+                        </div>
+                      ) : null}
+                    </div>
 
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <Typography variant="subtitle1" color="textSecondary">
-                      {post.created_at}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography variant="subtitle1" color="textSecondary">
+                        {post.created_at}
+                      </Typography>
+
+                      {this.props.showUserId ? (
+                        <Typography variant="subtitle1" color="textSecondary">
+                          user ID: {post.user_id}
+                        </Typography>
+                      ) : null}
+                    </div>
+
+                    <Typography variant="subtitle1" paragraph>
+                      {post.description}
                     </Typography>
 
-                    {this.props.showUserId ? (
-                      <Typography variant="subtitle1" color="textSecondary">
-                        user ID: {post.user_id}
-                      </Typography>
-                    ) : null}
-                  </div>
+                    {!this.props.comments.length ? (
+                      <Button
+                        disabled
+                        style={{
+                          textTransform: "none",
+                        }}
+                      >
+                        Комментариев нет
+                      </Button>
+                    ) : (
+                      <Button
+                        style={{
+                          textTransform: "none",
+                        }}
+                        color="primary"
+                        onClick={() =>
+                          this.setState({
+                            commentsHidden: !this.state.commentsHidden,
+                          })
+                        }
+                      >
+                        {" "}
+                        {this.state.commentsHidden
+                          ? `Показать комментарии: ${this.props.comments.length}`
+                          : "Скрыть комментарии"}
+                      </Button>
+                    )}
+                  </CardContent>
+                </div>
 
-                  <Typography variant="subtitle1" paragraph>
-                    {post.description}
-                  </Typography>
-
-                  {!this.props.comments.length ? (
-                    <Button
-                      disabled
-                      style={{
-                        textTransform: "none",
-                      }}
-                    >
-                      Комментариев нет
-                    </Button>
-                  ) : (
-                    <Button
-                      style={{
-                        textTransform: "none",
-                      }}
-                      color="primary"
-                      onClick={() =>
-                        this.setState({
-                          commentsHidden: !this.state.commentsHidden,
-                        })
-                      }
-                    >
-                      {" "}
-                      {this.state.commentsHidden
-                        ? `Показать комментарии: ${this.props.comments.length}`
-                        : "Скрыть комментарии"}
-                    </Button>
-                  )}
-                </CardContent>
-              </div>
-
-              {this.state.commentsHidden ? null : (
-                <Comments
-                  postId={post.id}
-                  comments={this.props.comments}
-                  userId={post.user_id}
-                  onUpdate={() => this.props.onCommentsUpdate()}
-                />
-              )}
-            </Card>
-          </Grid>
-        </div>
+                {this.state.commentsHidden ? null : (
+                  <Comments
+                    postId={post.id}
+                    comments={this.props.comments}
+                    showCommentForm={this.props.showCommentForm}
+                    userId={post.user_id}
+                    onUpdate={() => this.props.onCommentsUpdate()}
+                  />
+                )}
+              </Card>
+            </Grid>
+          </div>
+        )}
       </div>
     );
   }

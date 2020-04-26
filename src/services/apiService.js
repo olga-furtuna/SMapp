@@ -171,6 +171,34 @@ export const fetchSinglePostService = (request) => {
     .then((result) => result);
 };
 
+export const editPostService = (request) => {
+  const EDIT_POST_API_ENDPOINT = "https://postify-api.herokuapp.com/posts/";
+
+  const parameters = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(request.data),
+  };
+
+  return fetch(
+    EDIT_POST_API_ENDPOINT +
+      request.data.id +
+      buildQueryString(AuthStorage.getData()),
+    parameters
+  )
+    .then((response) => {
+      return {
+        result: response.json(),
+      };
+    })
+    .then((json) => {
+      return json.result;
+    })
+    .then((result) => result);
+};
+
 export const fetchCommentsService = (request) => {
   const FETCH_COMMENTS_API_ENDPOINT =
     "https://postify-api.herokuapp.com/comments";

@@ -7,6 +7,7 @@ import {
   createPostSaga,
   deletePostSaga,
   fetchSinglePostSaga,
+  editPostSaga,
   fetchCommentsSaga,
   createCommentSaga,
   deleteCommentSaga,
@@ -22,6 +23,7 @@ export default function* watchAppActions() {
   yield takeLatest(types.CREATE_POST, createPostSaga);
   yield takeLatest(types.DELETE_POST, deletePostSaga);
   yield takeLatest(types.FETCH_SINGLE_POST, fetchSinglePostSaga);
+  yield takeLatest(types.EDIT_POST, editPostSaga);
   yield takeLatest(types.FETCH_COMMENTS, fetchCommentsSaga);
   yield takeLatest(types.CREATE_COMMENT, createCommentSaga);
   yield takeLatest(types.DELETE_COMMENT, deleteCommentSaga);

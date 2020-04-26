@@ -52,10 +52,7 @@ class PostPage extends Component {
 
   componentDidMount() {
     var id = this.props.match.params.id;
-    if (id) {
-      this.props.dispatch(fetchSinglePostAction({ id: id }));
-      this.fetchComments();
-    }
+    this.fetchData(id);
   }
 
   componentDidUpdate() {
@@ -65,11 +62,23 @@ class PostPage extends Component {
     }
   }
 
+  fetchData(id) {
+    if (id) {
+      this.fetchPost(id);
+      this.fetchComments();
+    }
+  }
+
+  fetchPost(id) {
+    this.props.dispatch(fetchSinglePostAction({ id: id }));
+  }
+
   fetchComments() {
     this.props.dispatch(fetchCommentsAction({}));
   }
 
   render() {
+    var postId = this.props.match.params.id;
     var post = this.props.response.singlePost.response
       ? this.props.response.singlePost.response
       : null;
@@ -95,6 +104,7 @@ class PostPage extends Component {
                   hideLink
                   showUserId
                   onUpdate={this.onRemovePost}
+                  onEdit={() => this.fetchData(postId)}
                   onCommentsUpdate={() => this.fetchComments()}
                 />
 

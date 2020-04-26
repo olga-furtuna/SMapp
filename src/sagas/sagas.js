@@ -7,6 +7,7 @@ import {
   createPostService,
   deletePostService,
   fetchSinglePostService,
+  editPostService,
   fetchCommentsService,
   createCommentService,
   deleteCommentService,
@@ -55,6 +56,11 @@ export function* deletePostSaga(payload) {
 export function* fetchSinglePostSaga(payload) {
   const response = yield call(fetchSinglePostService, payload);
   yield [put({ type: types.FETCH_SINGLE_POST_SUCCESS, response })];
+}
+
+export function* editPostSaga(payload) {
+  const response = yield call(editPostService, payload);
+  yield [put({ type: types.EDIT_POST_SUCCESS, response })];
 }
 
 export function* fetchCommentsSaga(payload) {

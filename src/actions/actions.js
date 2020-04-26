@@ -49,6 +49,13 @@ export const fetchSinglePostAction = (data) => {
   };
 };
 
+export const editPostAction = (data) => {
+  return {
+    type: types.EDIT_POST,
+    data,
+  };
+};
+
 export const fetchCommentsAction = (data) => {
   return {
     type: types.FETCH_COMMENTS,
