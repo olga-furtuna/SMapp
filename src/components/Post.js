@@ -192,7 +192,7 @@ class Post extends Component {
                     postId={post.id}
                     comments={this.props.comments}
                     showCommentForm={this.props.showCommentForm}
-                    userId={post.user_id}
+                    userId={userId}
                     onUpdate={() => this.props.onCommentsUpdate()}
                   />
                 )}

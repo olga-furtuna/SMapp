@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 //Actions //
-import { deletePostAction } from "../actions/actions";
 import { fetchCommentsAction } from "../actions/actions";
 
 // Components //

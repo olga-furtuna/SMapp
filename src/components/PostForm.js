@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+//Actions //
+import { createPostAction } from "../actions/actions";
+
 // Material UI //
 import { withStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -9,9 +12,6 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
-
-//Actions //
-import { createPostAction } from "../actions/actions";
 
 const styles = (theme) => ({
   root: {
