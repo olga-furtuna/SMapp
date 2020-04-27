@@ -74,19 +74,25 @@ class Comment extends Component {
                   <Typography component="h5" variant="h6">
                     User ID: {comment.user_id}
                   </Typography>
-
-                  {comment.user_id == userId ? (
-                    <IconButton
-                      aria-label="delete"
-                      onClick={(event) => this.onClick(event, comment.id)}
-                    >
-                      <CloseIcon fontSize="small" color="action" />
-                    </IconButton>
-                  ) : null}
+                  {
+                    // eslint-disable-next-line
+                    comment.user_id == userId ? (
+                      <IconButton
+                        aria-label="delete"
+                        onClick={(event) => this.onClick(event, comment.id)}
+                      >
+                        <CloseIcon fontSize="small" color="action" />
+                      </IconButton>
+                    ) : null
+                  }
                 </div>
 
                 <Typography variant="subtitle2" color="textSecondary">
                   {comment.created_at}
+                </Typography>
+                <Typography variant="subtitle2" color="textSecondary">
+                  Комментарий на {comment.commentable_type} #
+                  {comment.commentable_id}
                 </Typography>
                 <Typography variant="subtitle2">{comment.message}</Typography>
               </CardContent>

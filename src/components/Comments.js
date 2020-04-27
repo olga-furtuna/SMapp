@@ -13,6 +13,7 @@ class Comments extends Component {
     return (
       <div>
         {comments
+          // eslint-disable-next-line
           .filter((comment) => comment.commentable_id == postId)
           .sort((a, b) => {
             return new Date(b.created_at) - new Date(a.created_at);

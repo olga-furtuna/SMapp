@@ -10,6 +10,8 @@ import CommentForm from "./CommentForm";
 import { fetchSinglePostAction } from "../actions/actions";
 import { fetchCommentsAction } from "../actions/actions";
 
+import { filterComments } from "../services/filterComments";
+
 // Material UI //
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -100,7 +102,7 @@ class PostPage extends Component {
               <div>
                 <Post
                   post={post}
-                  comments={comments.filter((x) => x.commentable_id == post.id)}
+                  comments={filterComments(post.id, comments)}
                   hideLink
                   showUserId
                   onUpdate={this.onRemovePost}

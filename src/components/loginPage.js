@@ -128,7 +128,9 @@ class LoginPage extends Component {
               autoComplete="current-password"
             />
 
-            {!isSuccess ? null : <Redirect to="home" />}
+            {!isSuccess && !AuthStorage.hasData() ? null : (
+              <Redirect to="home" />
+            )}
             {isError ? <Alert severity="error"> {message} </Alert> : null}
 
             <Button

@@ -116,24 +116,27 @@ class Post extends Component {
                         </Link>
                       )}
 
-                      {post.user_id == userId ? (
-                        <div>
-                          {this.props.hideLink ? (
+                      {
+                        // eslint-disable-next-line
+                        post.user_id == userId ? (
+                          <div>
+                            {this.props.hideLink ? (
+                              <IconButton
+                                aria-label="edit"
+                                onClick={(event) => this.toggleEditMode()}
+                              >
+                                <EditIcon fontSize="small" color="action" />
+                              </IconButton>
+                            ) : null}
                             <IconButton
-                              aria-label="edit"
-                              onClick={(event) => this.toggleEditMode()}
+                              aria-label="delete"
+                              onClick={(event) => this.onClick(event, post.id)}
                             >
-                              <EditIcon fontSize="small" color="action" />
+                              <CloseIcon fontSize="small" color="action" />
                             </IconButton>
-                          ) : null}
-                          <IconButton
-                            aria-label="delete"
-                            onClick={(event) => this.onClick(event, post.id)}
-                          >
-                            <CloseIcon fontSize="small" color="action" />
-                          </IconButton>
-                        </div>
-                      ) : null}
+                          </div>
+                        ) : null
+                      }
                     </div>
 
                     <div

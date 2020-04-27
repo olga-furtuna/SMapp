@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 //Actions //
 import { fetchCommentsAction } from "../actions/actions";
 
+import { filterComments } from "../services/filterComments";
+
 // Components //
 import Post from "./Post";
 
@@ -58,7 +60,7 @@ class Posts extends Component {
             <Post
               key={post.id}
               post={post}
-              comments={comments.filter((x) => x.commentable_id == post.id)}
+              comments={filterComments(post.id, comments)}
               onUpdate={this.props.onUpdate}
               onCommentsUpdate={() => this.fetchComments()}
             />

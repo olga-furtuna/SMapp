@@ -31,6 +31,7 @@ class UserPosts extends Component {
       <div>
         <Container maxWidth="lg">
           <Posts
+            // eslint-disable-next-line
             posts={posts.filter((x) => x.user_id == userId)}
             onUpdate={() => this.fetchPosts()}
           />
